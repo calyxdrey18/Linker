@@ -1,0 +1,16 @@
+services:
+  # This is our main web server
+  - type: web
+    name: group-connect
+    runtime: node
+    # The command to install dependencies
+    build_command: npm install
+    # The command to start our server
+    start_command: node server.js
+    # Health check to ensure the server is running
+    healthCheckPath: /
+    # Definition for the persistent disk
+    disks:
+      - name: data-disk           # A name for the disk
+        mountPath: /var/data     # The path where the disk will be available
+        sizeGB: 1                # 1GB is included in the free tier
