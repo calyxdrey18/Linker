@@ -9,8 +9,12 @@ services:
     runtime: node
     plan: free # Specifies the free instance type
 
-    # The command to install dependencies, run on every deploy
-    buildCommand: npm install
+    # --- THIS IS THE FIX ---
+    # The build command will now run two commands:
+    # 1. npm install: To install all your dependencies.
+    # 2. mkdir -p /var/data/uploads: To create the uploads directory with the right permissions.
+    # The '-p' flag ensures it doesn't fail if the directory already exists.
+    buildCommand: npm install && mkdir -p /var/data/uploads
 
     # The command to start our server
     startCommand: node server.js
@@ -18,7 +22,7 @@ services:
     # A health check path that Render uses to determine if your service is live
     healthCheckPath: /api/health
 
-    # This section defines the persistent disk
+    # This section defines the persistent disk. It remains the same.
     disks:
       - name: data-disk           # An internal name for the disk
         mountPath: /var/data     # The crucial path where the disk will be available inside your app
