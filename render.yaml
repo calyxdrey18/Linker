@@ -1,16 +1,25 @@
+# This is a Render Blueprint file.
+# It defines the services and resources for your application.
+# Render will automatically detect and use this file when you deploy.
+
 services:
-  # This is our main web server
+  # This defines our main web server
   - type: web
-    name: group-connect
+    name: group-connect # A name for your service
     runtime: node
-    # The command to install dependencies
-    build_command: npm install
+    plan: free # Specifies the free instance type
+
+    # The command to install dependencies, run on every deploy
+    buildCommand: npm install
+
     # The command to start our server
-    start_command: node server.js
-    # Health check to ensure the server is running
-    healthCheckPath: /
-    # Definition for the persistent disk
+    startCommand: node server.js
+
+    # A health check path that Render uses to determine if your service is live
+    healthCheckPath: /api/health
+
+    # This section defines the persistent disk
     disks:
-      - name: data-disk           # A name for the disk
-        mountPath: /var/data     # The path where the disk will be available
+      - name: data-disk           # An internal name for the disk
+        mountPath: /var/data     # The crucial path where the disk will be available inside your app
         sizeGB: 1                # 1GB is included in the free tier
