@@ -1,7 +1,6 @@
 # This is a Render Blueprint file.
 # It defines the services and resources for your application.
 # Render will automatically detect and use this file when you deploy.
-
 services:
   # This defines our main web server
   - type: web
@@ -9,21 +8,17 @@ services:
     runtime: node
     plan: free # Specifies the free instance type
 
-    # --- THIS IS THE FIX ---
-    # The build command will now run two commands:
-    # 1. npm install: To install all your dependencies.
-    # 2. mkdir -p /var/data/uploads: To create the uploads directory with the right permissions.
-    # The '-p' flag ensures it doesn't fail if the directory already exists.
-    buildCommand: npm install && mkdir -p /var/data/uploads
+    # The command to install dependencies, run on every deploy
+    buildCommand: npm install
 
     # The command to start our server
     startCommand: node server.js
 
-    # A health check path that Render uses to determine if your service is live
+    # A custom, reliable health check path Render uses to know your app is live
     healthCheckPath: /api/health
 
-    # This section defines the persistent disk. It remains the same.
+    # This section is the key: it defines the persistent disk
     disks:
       - name: data-disk           # An internal name for the disk
-        mountPath: /var/data     # The crucial path where the disk will be available inside your app
+        mountPath: /var/data     # The crucial path where the disk is attached
         sizeGB: 1                # 1GB is included in the free tier
