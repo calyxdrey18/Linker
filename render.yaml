@@ -1,6 +1,7 @@
 # This is a Render Blueprint file.
 # It defines the services and resources for your application.
 # Render will automatically detect and use this file when you deploy.
+
 services:
   # This defines our main web server
   - type: web
@@ -14,11 +15,11 @@ services:
     # The command to start our server
     startCommand: node server.js
 
-    # A custom, reliable health check path Render uses to know your app is live
+    # A health check path that Render uses to determine if your service is live
     healthCheckPath: /api/health
 
-    # This section is the key: it defines the persistent disk
+    # This section defines the persistent disk
     disks:
       - name: data-disk           # An internal name for the disk
-        mountPath: /var/data     # The crucial path where the disk is attached
+        mountPath: /var/data     # The crucial path where the disk will be available inside your app
         sizeGB: 1                # 1GB is included in the free tier
